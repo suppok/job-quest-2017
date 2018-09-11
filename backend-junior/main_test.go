@@ -40,8 +40,8 @@ func TestGetNonExistentTodo(t *testing.T) {
 	checkResponseCode(t, http.StatusNotFound, response.Code)
 	var m map[string]string
 	json.Unmarshal(response.Body.Bytes(), &m)
-	if m["error"] != "User not found" {
-		t.Errorf("Expected the 'error' key of the response to be set to 'User not found'. Got '%s'", m["error"])
+	if m["error"] != "Todo not found" {
+		t.Errorf("Expected the 'error' key of the response to be set to 'Todo not found'. Got '%s'", m["error"])
 	}
 }
 
@@ -53,7 +53,7 @@ func TestCreateTodo(t *testing.T) {
 	checkResponseCode(t, http.StatusCreated, response.Code)
 	var m map[string]interface{}
 	json.Unmarshal(response.Body.Bytes(), &m)
-	if m["title"] != "test user" {
+	if m["title"] != "test todo" {
 		t.Errorf("Expected todo title to be 'test todo'. Got '%v'", m["title"])
 	}
 	if m["description"] != "This is test description" {
@@ -117,7 +117,7 @@ func addTodos(count int) {
 		count = 1
 	}
 	for i := 0; i < count; i++ {
-		statement := fmt.Sprintf("INSERT INTO todos(title, description) VALUES('%s', %s)", "Todo "+strconv.Itoa(i+1), "Description "+strconv.Itoa(i+1))
+		statement := fmt.Sprintf("INSERT INTO todos(title, description) VALUES('%s', '%s')", "Todo "+strconv.Itoa(i+1), "Description "+strconv.Itoa(i+1))
 		a.DB.Exec(statement)
 	}
 }
