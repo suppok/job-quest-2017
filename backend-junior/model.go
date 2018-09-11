@@ -5,24 +5,24 @@ import (
 	"errors"
 )
 
-type user struct {
+type todo struct {
 	ID          int    `json:"id"`
 	Title       string `json:"title"`
 	description string `json:"description"`
 }
 
-func (u *user) getUser(db *sql.DB) error {
+func (t *todo) getTodo(db *sql.DB) error {
 	return errors.New("Not implemented")
 }
-func (u *user) updateUser(db *sql.DB) error {
+func (t *todo) updateTodo(db *sql.DB) error {
 	return errors.New("Not implemented")
 }
-func (u *user) deleteUser(db *sql.DB) error {
+func (t *todo) deleteTodo(db *sql.DB) error {
 	return errors.New("Not implemented")
 }
-func (u *user) createUser(db *sql.DB) error {
+func (t *todo) createTodo(db *sql.DB) error {
 	return errors.New("Not implemented")
 }
-func getUsers(db *sql.DB, start, count int) ([]user, error) {
+func getTodos(db *sql.DB, start, count int) ([]todo, error) {
 	return nil, errors.New("Not implemented")
 }
