@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"errors"
 	"fmt"
 )
 
@@ -18,11 +17,14 @@ func (t *todo) getTodo(db *sql.DB) error {
 }
 
 func (t *todo) updateTodo(db *sql.DB) error {
-	return errors.New("Not implemented")
+	statement := fmt.Sprintf("UPDATE todos SET title='%s', description='%s' WHERE id=%d", t.Title, t.Description, t.ID)
+	_, err := db.Exec(statement)
+	return err
 }
-
 func (t *todo) deleteTodo(db *sql.DB) error {
-	return errors.New("Not implemented")
+	statement := fmt.Sprintf("DELETE FROM todos WHERE id=%d", t.ID)
+	_, err := db.Exec(statement)
+	return err
 }
 
 func (t *todo) createTodo(db *sql.DB) error {

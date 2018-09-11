@@ -31,8 +31,8 @@ func (a *App) initializeRoutes() {
 	a.Router.HandleFunc("/todos", a.getTodos).Methods("GET")
 	a.Router.HandleFunc("/todo", a.createTodo).Methods("POST")
 	a.Router.HandleFunc("/todo/{id:[0-9]+}", a.getTodo).Methods("GET")
-	// a.Router.HandleFunc("/user/{id:[0-9]+}", a.updateUser).Methods("PUT")
-	// a.Router.HandleFunc("/user/{id:[0-9]+}", a.deleteUser).Methods("DELETE")
+	a.Router.HandleFunc("/todo/{id:[0-9]+}", a.updateTodo).Methods("PUT")
+	a.Router.HandleFunc("/todo/{id:[0-9]+}", a.deleteTodo).Methods("DELETE")
 }
 
 func (a *App) Run(addr string) {
@@ -89,6 +89,43 @@ func (a *App) getTodo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	respondWithJSON(w, http.StatusOK, t)
+}
+
+func (a *App) updateTodo(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		respondWithError(w, http.StatusBadRequest, "Invalid todo ID")
+		return
+	}
+	var t todo
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&t); err != nil {
+		respondWithError(w, http.StatusBadRequest, "Invalid resquest payload")
+		return
+	}
+	defer r.Body.Close()
+	t.ID = id
+	if err := t.updateTodo(a.DB); err != nil {
+		respondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+	respondWithJSON(w, http.StatusOK, t)
+}
+
+func (a *App) deleteTodo(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		respondWithError(w, http.StatusBadRequest, "Invalid todo ID")
+		return
+	}
+	t := todo{ID: id}
+	if err := t.deleteTodo(a.DB); err != nil {
+		respondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+	respondWithJSON(w, http.StatusOK, map[string]string{"result": "success"})
 }
 
 func respondWithError(w http.ResponseWriter, code int, message string) {
