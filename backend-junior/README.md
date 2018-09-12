@@ -11,15 +11,6 @@
 
 * Async/Await
 * ES6, 7 syntax
-* API Testing
-* HTTP request logger
-* Caching REST API
-
-### Bonus
-
-* express-validator (to add validations for limit length of characters in todo)
-* CSRF (for cross-site fraud prevention)
-
 ___
 ### Prerequisites
 * Golang
