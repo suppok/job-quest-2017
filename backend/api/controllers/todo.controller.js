@@ -1,7 +1,8 @@
 'use strict';
 
-var mongoose = require('mongoose'),
-  TodoModel = mongoose.model('Todo');
+let mongoose = require('mongoose'),
+  TodoModel = mongoose.model('Todo')
+
 
 module.exports = {
 
@@ -16,7 +17,9 @@ module.exports = {
   },
 
   createNewTodo: async (req, res) => {
-    let newTodo = new TodoModel(req.body);
+    if (req.body.title.length > 50)
+      return res.json({message: 'Title length cannot more than 50 characters'})
+    let newTodo = new TodoModel(req.body)
     await newTodo.save()
     let result = {
       object: newTodo,
@@ -26,6 +29,8 @@ module.exports = {
   },
 
   updateTodo: async (req, res) => {
+    if (req.body.title.length > 50)
+      return res.json({message: 'Title length cannot more than 50 characters'})
     let todoResponse = await TodoModel.findById(req.params.todo_id)
     todoResponse.title = req.body.title
     await todoResponse.save()

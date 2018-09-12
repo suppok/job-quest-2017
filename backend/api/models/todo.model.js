@@ -1,6 +1,6 @@
 'use strict';
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+let mongoose = require('mongoose'),
+  Schema = mongoose.Schema
 
 var TodoSchema = new Schema({
   title: {
@@ -18,4 +18,4 @@ var TodoSchema = new Schema({
   
 });
 
-module.exports = mongoose.model('Todo', TodoSchema);
+module.exports = mongoose.model('Todo', TodoSchema)

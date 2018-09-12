@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = (app) => {
-  var todo = require('../controllers/todo.controller')
+  let todo = require('../controllers/todo.controller')
 
   app.route('/todos')
     .get(todo.getAllTodos)
